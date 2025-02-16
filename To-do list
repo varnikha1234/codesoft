@@ -1,0 +1,92 @@
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
+class ToDoList {
+private:
+    struct Task {
+        string description;
+        bool completed;
+    };
+    vector<Task> tasks;
+
+public:
+    void addTask(const string& task) {
+        tasks.push_back({task, false});
+        cout << "Task \"" << task << "\" added." << endl;
+    }
+
+    void viewTasks() const {
+        if (tasks.empty()) {
+            cout << "No tasks available." << endl;
+            return;
+        }
+        cout << "\nTo-Do List:" << endl;
+        for (size_t i = 0; i < tasks.size(); ++i) {
+            cout << i + 1 << ". " << tasks[i].description << (tasks[i].completed ? " [Completed]" : " [Pending]") << endl;
+        }
+    }
+
+    void markCompleted(int index) {
+        if (index > 0 && index <= tasks.size()) {
+            tasks[index - 1].completed = true;
+            cout << "Task " << index << " marked as completed." << endl;
+        } else {
+            cout << "Invalid task number." << endl;
+        }
+    }
+
+    void removeTask(int index) {
+        if (index > 0 && index <= tasks.size()) {
+            cout << "Task '" << tasks[index - 1].description << "' removed." << endl;
+            tasks.erase(tasks.begin() + index - 1);
+        } else {
+            cout << "Invalid task number." << endl;
+        }
+    }
+};
+
+int main() {
+    ToDoList todoList;
+    while (true) {
+        cout << "\nOptions:" << endl;
+        cout << "1. Add Task" << endl;
+        cout << "2. View Tasks" << endl;
+        cout << "3. Mark Task as Completed" << endl;
+        cout << "4. Remove Task" << endl;
+        cout << "5. Exit" << endl;
+        cout << "Choose an option: ";
+        
+        int choice;
+        cin >> choice;
+        cin.ignore();
+        
+        if (choice == 1) {
+            cout << "Enter task: ";
+            string task;
+            getline(cin, task);
+            todoList.addTask(task);
+        } else if (choice == 2) {
+            todoList.viewTasks();
+        } else if (choice == 3) {
+            todoList.viewTasks();
+            cout << "Enter task number to mark as completed: ";
+            int index;
+            cin >> index;
+            todoList.markCompleted(index);
+        } else if (choice == 4) {
+            todoList.viewTasks();
+            cout << "Enter task number to remove: ";
+            int index;
+            cin >> index;
+            todoList.removeTask(index);
+        } else if (choice == 5) {
+            cout << "Exiting To-Do List Manager. Goodbye!" << endl;
+            break;
+        } else {
+            cout << "Invalid choice. Please try again." << endl;
+        }
+    }
+    return 0;
+}
